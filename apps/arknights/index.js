@@ -5,9 +5,7 @@ import LinTools from '../../modules/index.js'
 export default class Arknights extends LinTools {
   constructor () {
     super({
-      name: 'lin-tools-plugin',
-      dsc: '林自用工具插件',
-      priority: 50,
+      moduleName: '明日方舟工具模块',
       rule: [
         {
           reg: '理智(\\d+)(/)?(\\d+)?',
@@ -52,7 +50,7 @@ export default class Arknights extends LinTools {
     try {
       const path = `${this.dataPath}/reason.json`
       const { time, date, noteTime } = await this.getReasonTime(currReasonNum, maxReasonNum)
-      const obj = { userId, currReasonNum, maxReasonNum, recoverTime: time, recoverDate: date, noteTime, groupId }
+      const obj = { userId, currReasonNum, maxReasonNum, recoverTime: time, recoverDate: date, noteTime, groupId, isTips: false }
       if (this.existsJSON(path)) {
         const json = await this.readJSON(path)
         const map = this.arrayToMap(json, 'userId')
@@ -69,25 +67,32 @@ export default class Arknights extends LinTools {
   }
 
   async reasonTips () {
-    const path = `${this.dataPath}/reason.json`
-    if (this.existsJSON(path)) {
-      const json = await this.readJSON(path)
-      const map = this.arrayToMap(json, 'userId')
-      const mapIter = map.values()
-      for (let i = 0; i < map.size; i++) {
-        const item = mapIter.next().value
-        const noteTime = moment(item.noteTime)
-        const currTime = moment()
-        const diff = currTime.diff(noteTime, 'minutes')
-        const dot = parseInt(diff / 6)
-        const curr = item.currReasonNum + dot
-        if (curr >= item.maxReasonNum) {
-          Bot.sendGroupMsg(item.groupId, [
-            global.segment.at(item.userId),
-            '刀客塔，你记录的理智好像得到了恢复, 快去看看吧~'
-          ])
+    try {
+      const path = `${this.dataPath}/reason.json`
+      if (this.existsJSON(path)) {
+        const json = await this.readJSON(path)
+        const map = this.arrayToMap(json, 'userId')
+        const mapIter = map.values()
+        for (let i = 0; i < map.size; i++) {
+          const item = mapIter.next().value
+          const noteTime = moment(item.noteTime)
+          const currTime = moment()
+          const diff = currTime.diff(noteTime, 'minutes')
+          const dot = parseInt(diff / 6)
+          const curr = item.currReasonNum + dot
+          if (curr >= item.maxReasonNum && !item.isTips) {
+            Bot.sendGroupMsg(item.groupId, [
+              global.segment.at(item.userId),
+              '刀客塔，你记录的理智好像得到了恢复, 快去看看吧~'
+            ])
+            map.set(item.userId, { ...item, isTips: true })
+            await this.writeJSON(`${this.dataPath}/reason.json`, this.mapToArray(map))
+          }
         }
       }
+    } catch (error) {
+      console.log('reasonTips error', error)
+      return Promise.reject(new Error(error))
     }
   }
 
