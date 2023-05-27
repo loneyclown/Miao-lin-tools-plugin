@@ -94,6 +94,6 @@ export default class LinTools extends plugin {
     }
     const time = moment()
     time.hour(hourTime).minute(minuteTime).second(secondTime)
-    return { hourTime, minuteTime, secondTime, time: time.format('HH:mm:ss') }
+    return { hourTime, minuteTime, secondTime, time }
   }
 }
