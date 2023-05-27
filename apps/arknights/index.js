@@ -107,7 +107,7 @@ function getDate (currReasonNum, maxReasonNum) {
   const noteTime = moment().format('YYYY-MM-DD HH:mm:ss')
   const difference = Number(maxReasonNum) - Number(currReasonNum)
   const seconds = difference * 6 * 60
-  const time = LinTools.getTimeBySeconds(seconds).time
+  const time = LinTools.getTimeBySeconds(seconds).time.format('HH小时mm分ss秒')
   const date = moment(noteTime).add(seconds, 's').format('YYYY-MM-DD HH:mm:ss')
   return { time, date, noteTime }
 }
