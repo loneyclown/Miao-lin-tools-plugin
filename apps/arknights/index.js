@@ -16,7 +16,7 @@ export default class Arknights extends LinTools {
 
     this.task = [
       {
-        cron: '0/30 * * * * ?',
+        cron: '0 0/6 * * * ?',
         name: '理智恢复提醒',
         fnc: () => this.reasonTips(),
         log: false
