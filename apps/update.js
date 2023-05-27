@@ -2,7 +2,7 @@
 import { createRequire } from 'module'
 import _ from 'lodash'
 
-import LinTools from '../../modules/index.js'
+import LinTools from '../modules/index.js'
 import { Restart } from '../../other/restart.js'
 
 const require = createRequire(import.meta.url)
