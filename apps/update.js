@@ -18,7 +18,7 @@ export default class Update extends LinTools {
       rule: [
         {
           reg: '(强制)?更新',
-          fnc: 'reason'
+          fnc: 'update'
         }
       ]
     })
