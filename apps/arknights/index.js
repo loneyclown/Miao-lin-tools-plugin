@@ -10,7 +10,7 @@ export default class Arknights extends LinTools {
       priority: 50,
       rule: [
         {
-          reg: '^#理智记录(\\d+)?',
+          reg: '理智(\\d+)(/)?(\\d+)?',
           fnc: 'reason'
         }
       ]
@@ -18,37 +18,50 @@ export default class Arknights extends LinTools {
 
     this.task = [
       {
-        cron: '0/6 * * * * ?',
+        cron: '0/30 * * * * ?',
         name: '理智恢复提醒',
-        fnc: this.reasonTips,
+        fnc: () => this.reasonTips(),
         log: false
       }
     ]
+  }
 
-    // console.log('34 >>> this', this)
-    // console.log('34 >>> this', this.e)
-    // console.log('34 >>> this', this.e.reply)
+  get dataPath () {
+    return `${this.pluginDataPath}/arknights`
   }
 
   async reason (e) {
-    const reg = /^#理智记录(\d+)/
-    const reasonNum = e.msg.replace(reg, '$1')
-    if (!_.isNumber(Number(reasonNum)) || Number(reasonNum) <= 0) {
-      e.reply('请输入需要记录的理智值, 请输入大于0的数值, 如: #理智记录20')
+    console.log(this.e)
+    const rule = _.find(this.rule, ['fnc', 'reason'])
+    const reg = new RegExp(rule.reg)
+    const currReasonNum = Number(e.msg.replace(reg, '$1'))
+    const maxReasonNum = Number(e.msg.replace(reg, '$3') || 130)
+    const userId = e.user_id
+    const groupId = e.group_id
+
+    console.log({
+      currReasonNum,
+      maxReasonNum
+    })
+
+    if (currReasonNum >= maxReasonNum) {
+      e.reply('刀客塔，你的理智足够充足，去消费下再来吧~', true)
       return false
     }
 
-    console.log(e.user_id)
-
     try {
-      await redis.set(`LIN-TOOLS-ARK-REASON:${e.user_id}`, reasonNum)
-
-      const difference = 130 - Number(reasonNum)
-      const seconds = difference * 6 * 60
-      const time = moment().subtract(seconds, 'seconds').format('hh:mm:ss')
-      const date = moment().add(seconds, 'seconds').format('YYYY-MM-DD HH:mm:ss')
-
-      e.reply(`已为您记录下当前理智值[${reasonNum}]，预计[${time}]后恢复到130, 预计完全恢复时间: [${date}]`, true)
+      const path = `${this.dataPath}/reason.json`
+      const { time, date, noteTime } = await this.getReasonTime(currReasonNum, maxReasonNum)
+      const obj = { userId, currReasonNum, maxReasonNum, recoverTime: time, recoverDate: date, noteTime, groupId }
+      if (this.existsJSON(path)) {
+        const json = await this.readJSON(path)
+        const map = this.arrayToMap(json, 'userId')
+        map.set(userId, obj)
+        await this.writeJSON(`${this.dataPath}/reason.json`, this.mapToArray(map))
+      } else {
+        await this.writeJSON(`${this.dataPath}/reason.json`, [obj])
+      }
+      e.reply(`已为您记录下当前理智值[${currReasonNum}]\n预计[${time}]后恢复到[${maxReasonNum}]\n预计完全恢复时间: [${date}]`, true)
     } catch (error) {
       logger.error(error)
       e.reply('理智记录失败，请检查日志')
@@ -56,14 +69,40 @@ export default class Arknights extends LinTools {
   }
 
   async reasonTips () {
-    // console.log('e', e)
-    // console.log('this', this)
-    // console.log('this.job', this.job)
-    // console.log(Bot)
-    // console.log(Bot.e)
-    // console.log(Bot.reply)
-    // // console.log('this.job.job', this.job.job)
-    // // console.log(this.reply)
-    // Bot.reply('测试提醒', false, { at: true })
+    const path = `${this.dataPath}/reason.json`
+    if (this.existsJSON(path)) {
+      const json = await this.readJSON(path)
+      const map = this.arrayToMap(json, 'userId')
+      const mapIter = map.values()
+      for (let i = 0; i < map.size; i++) {
+        const item = mapIter.next().value
+        const noteTime = moment(item.noteTime)
+        const currTime = moment()
+        const diff = currTime.diff(noteTime, 'minutes')
+        const dot = parseInt(diff / 6)
+        const curr = item.currReasonNum + dot
+        if (curr >= item.maxReasonNum) {
+          Bot.sendGroupMsg(item.groupId, [
+            global.segment.at(item.userId),
+            '刀客塔，你记录的理智好像得到了恢复, 快去看看吧~'
+          ])
+        }
+      }
+    }
   }
+
+  async getReasonTime (currReasonNum, maxReasonNum) {
+    if (currReasonNum && maxReasonNum) {
+      return getDate(currReasonNum, maxReasonNum)
+    }
+  }
+}
+
+function getDate (currReasonNum, maxReasonNum) {
+  const noteTime = moment().format('YYYY-MM-DD HH:mm:ss')
+  const difference = Number(maxReasonNum) - Number(currReasonNum)
+  const seconds = difference * 6 * 60
+  const time = LinTools.getTimeBySeconds(seconds).time
+  const date = moment(noteTime).add(seconds, 's').format('YYYY-MM-DD HH:mm:ss')
+  return { time, date, noteTime }
 }
