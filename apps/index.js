@@ -1,7 +1,7 @@
 import Arknights from './arknights/index.js'
+import Update from './update.js'
 
 export {
-  Arknights
+  Arknights,
+  Update
 }
-
-// export { default as Arknights } from './arknights'
