@@ -49,16 +49,16 @@ export default class Arknights extends LinTools {
     }
 
     try {
-      const path = `${this.this.pluginDataPath}/reason.json`
+      const path = `${this.pluginDataPath}/reason.json`
       const { time, date, noteTime } = await this.getReasonTime(currReasonNum, maxReasonNum)
       const obj = { userId, currReasonNum, maxReasonNum, recoverTime: time, recoverDate: date, noteTime, groupId, isTips: false }
       if (this.existsJSON(path)) {
         const json = await this.readJSON(path)
         const map = this.arrayToMap(json, 'userId')
         map.set(userId, obj)
-        await this.writeJSON(`${this.this.pluginDataPath}/reason.json`, this.mapToArray(map))
+        await this.writeJSON(`${this.pluginDataPath}/reason.json`, this.mapToArray(map))
       } else {
-        await this.writeJSON(`${this.this.pluginDataPath}/reason.json`, [obj])
+        await this.writeJSON(`${this.pluginDataPath}/reason.json`, [obj])
       }
       e.reply(`已为您记录下当前理智值[${currReasonNum}]\n预计[${time}]后恢复到[${maxReasonNum}]\n预计完全恢复时间: [${date}]`, true)
     } catch (error) {
@@ -69,7 +69,7 @@ export default class Arknights extends LinTools {
 
   async reasonTips () {
     try {
-      const path = `${this.this.pluginDataPath}/reason.json`
+      const path = `${this.pluginDataPath}/reason.json`
       if (this.existsJSON(path)) {
         const json = await this.readJSON(path)
         const map = this.arrayToMap(json, 'userId')
