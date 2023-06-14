@@ -26,7 +26,7 @@ export default class LinTools extends plugin {
   }
 
   get pluginDataPath () {
-    return `${this.pluginRoot}/data`
+    return `${this.pluginRoot}/data/${this.moduleCode}`
   }
 
   get pluginResourcesPath () {

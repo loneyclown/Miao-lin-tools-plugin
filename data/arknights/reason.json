@@ -1,11 +1,32 @@
 [
   {
     "userId": 40462995,
-    "currReasonNum": 129,
+    "currReasonNum": 11,
     "maxReasonNum": 130,
-    "recoverTime": "2023-05-27 00:06:00",
-    "recoverDate": "2023-05-27 15:13:03",
-    "noteTime": "2023-05-27 15:07:03",
-    "groupId": 306215113
+    "recoverTime": "11小时54分00秒",
+    "recoverDate": "2023-05-31 22:34:38",
+    "noteTime": "2023-05-31 10:40:38",
+    "groupId": 306215113,
+    "isTips": true
+  },
+  {
+    "userId": 2206495317,
+    "currReasonNum": 4,
+    "maxReasonNum": 130,
+    "recoverTime": "12小时36分00秒",
+    "recoverDate": "2023-05-28 12:38:45",
+    "noteTime": "2023-05-28 00:02:45",
+    "groupId": 306215113,
+    "isTips": true
+  },
+  {
+    "userId": 1615886394,
+    "currReasonNum": 2,
+    "maxReasonNum": 130,
+    "recoverTime": "12小时48分00秒",
+    "recoverDate": "2023-05-28 23:57:00",
+    "noteTime": "2023-05-28 11:09:00",
+    "groupId": 125299763,
+    "isTips": true
   }
 ]
