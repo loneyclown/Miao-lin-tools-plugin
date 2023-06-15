@@ -14,6 +14,7 @@ let uping = false
 export default class Update extends LinTools {
   constructor () {
     super({
+      moduleCode: 'update',
       moduleName: '插件更新模块',
       rule: [
         {

@@ -20,7 +20,9 @@ export default class Wuxia extends LinTools {
   }
 
   async announcement (e) {
+    /** 是否体服 */
     let tfFlag = false
+    /** 是否最新 */
     let newFlag = false
 
     if (e.msg.includes('体服')) {
@@ -31,7 +33,7 @@ export default class Wuxia extends LinTools {
       newFlag = true
     }
 
-    const url = 'https://wuxia.qq.com/webplat/info/news_version3/5012/5013/5014/5016/m3485/list_1.shtml'
+    const url = this.setting.wuxiaAnnoListUrl
     const htmlRes = await nodeFetch(url).then((response) => response.arrayBuffer()).then((buffer) => {
       // const utf8Decoder = new TextDecoder('utf-8')
       // const html = utf8Decoder.decode(buffer)
@@ -42,8 +44,8 @@ export default class Wuxia extends LinTools {
     const iterator = htmlRes.matchAll(liReg)
 
     let news = { text: '', date: '2000-01-01', url: '' }
-    // const arr = []
-    const tArr = []
+    const arr = []
+    // const tArr = []
     for (const item of iterator) {
       if (item && item[0]) {
         const liStr = item[0]
@@ -61,22 +63,38 @@ export default class Wuxia extends LinTools {
           }
         }
 
-        // arr.push({
-        //   liStr,
-        //   text,
-        //   date,
-        //   url: `https://wuxia.qq.com${url}`
-        // })
-        tArr.push(`【${date}】${text}: https://wuxia.qq.com${url}`)
+        if (tfFlag) {
+          if (text.includes('欢乐英雄')) {
+            arr.push({
+              liStr,
+              text,
+              date,
+              url: `https://wuxia.qq.com${url}`
+            })
+          }
+        } else {
+          arr.push({
+            liStr,
+            text,
+            date,
+            url: `https://wuxia.qq.com${url}`
+          })
+        }
+        // tArr.push(`【${date}】${text}: https://wuxia.qq.com${url}`)
       }
     }
 
-    logger.info(news)
+    // logger.info(news)
 
     if (newFlag) {
       e.reply(`【${news.date}】${news.text}: https://wuxia.qq.com${news.url}`)
       return false
     }
+
+    // 日期排序
+    const tArr = _.map(arr.sort((a, b) => moment(b.date).diff(moment(a.date))), (x) => {
+      return `【${x.date}】${x.text}: https://wuxia.qq.com${x.url}`
+    })
 
     e.reply(this.makeForwardMsg(tArr))
   }

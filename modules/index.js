@@ -3,8 +3,15 @@ import moment from 'moment'
 import fs from 'node:fs'
 import path from 'path'
 import plugin from '../../../lib/plugins/plugin.js'
+import Setting from './setting.js'
 
 export default class LinTools extends plugin {
+
+  /** 插件公用配置 */
+  baseSetting = {}
+  /** 插件模块配置 */
+  setting = {}
+
   constructor (conf) {
     super({
       name: 'lin-tools-plugin',
@@ -18,21 +25,38 @@ export default class LinTools extends plugin {
         }
       })
     })
+
+    // 初始化插件配置
+    if (!this.baseSetting || _.isEmpty(this.baseSetting)) {
+      this.baseSetting = Setting.getCfg('base')
+      // this.baseSetting = new Setting('base')
+    }
+    // this.setting = new Setting(conf.moduleCode)
+    this.setting = Setting.getCfg(conf.moduleCode)
   }
 
+  /** 插件根路径 */
   get pluginRoot () {
     const _path = process.cwd().replace(/\\/g, '/')
     return path.join(_path, 'plugins', this.name)
   }
 
+  /** 插件数据文件路径 */
   get pluginDataPath () {
     return `${this.pluginRoot}/data/${this.moduleCode}`
   }
 
+  /** 插件资源文件路径 */
   get pluginResourcesPath () {
     return `${this.pluginRoot}/resources`
   }
 
+  /**
+   * 数组转Map
+   * @param {*} arr 数组对象
+   * @param {*} key 转换后的map对象的key
+   * @returns 
+   */
   arrayToMap (arr, key) {
     const map = new Map()
     for (const item of arr) {
@@ -41,6 +65,11 @@ export default class LinTools extends plugin {
     return map
   }
 
+  /**
+   * Map转数组
+   * @param {*} map map对象
+   * @returns 
+   */
   mapToArray (map) {
     const arr = []
     // eslint-disable-next-line no-unused-vars
@@ -50,10 +79,21 @@ export default class LinTools extends plugin {
     return arr
   }
 
+  /**
+   * 判断json文件是否存在
+   * @param {*} filePath 文件路径
+   * @returns 
+   */
   existsJSON (filePath) {
     return fs.existsSync(filePath)
   }
 
+  /**
+   * 写入json
+   * @param {*} filePath 文件路径
+   * @param {*} data 需要写入的数据
+   * @returns 
+   */
   async writeJSON (filePath, data) {
     const newData = JSON.stringify(data, null, 2)
     await fs.promises.mkdir(path.dirname(filePath), { recursive: true })
@@ -67,6 +107,11 @@ export default class LinTools extends plugin {
     }
   }
 
+  /**
+   * 读取json
+   * @param {*} filePath 文件路径
+   * @returns 
+   */
   readJSON (filePath) {
     if (fs.existsSync(filePath)) {
       return JSON.parse(fs.readFileSync(filePath))
@@ -75,6 +120,11 @@ export default class LinTools extends plugin {
     }
   }
 
+  /**
+   * 静态 根据秒数获取完整时间对象
+   * @param {*} value 秒数
+   * @returns 
+   */
   static getTimeBySeconds (value) {
     let secondTime = parseInt(value)// 秒
     let minuteTime = 0// 分
