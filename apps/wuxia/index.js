@@ -14,11 +14,19 @@ export default class Wuxia extends LinTools {
         {
           reg: '天刀公告(体服)?(最新)?',
           fnc: 'announcement'
+        }, {
+          reg: '天刀145老一(文斗|答题|题目)?',
+          fnc: 'td145one'
         }
       ]
     })
   }
 
+  get moduleResourcesPath () {
+    return `${this.pluginResourcesPath}/wuxia`
+  }
+
+  /** 公告 */
   async announcement (e) {
     /** 是否体服 */
     let tfFlag = false
@@ -97,6 +105,12 @@ export default class Wuxia extends LinTools {
     })
 
     e.reply(this.makeForwardMsg(tArr))
+  }
+
+  /** 145答题 */
+  async td145one (e) {
+    const img = segment.image(`${this.moduleResourcesPath}/td145one.jpg`)
+    e.reply(img)
   }
 
   /**
