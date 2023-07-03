@@ -101,7 +101,7 @@ export default class Wuxia extends LinTools {
 
     // 日期排序
     const tArr = _.map(arr.sort((a, b) => moment(b.date).diff(moment(a.date))), (x) => {
-      return `【${x.date}】${x.text}: https://wuxia.qq.com${x.url}`
+      return `【${x.date}】${x.text}: ${x.url}`
     })
 
     e.reply(this.makeForwardMsg(tArr))
