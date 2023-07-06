@@ -23,7 +23,7 @@ export default class Nsh extends LinTools {
 
   职业攻略 (e) {
       const imgs = {
-          神相: 'https://i.postimg.cc/hvYVYZ0S/image.jpg'
+          神相: 'https://raw.githubusercontent.com/loneyclown/lin-assets/main/nsh/%E6%94%BB%E7%95%A5/%E7%A5%9E%E7%9B%B8.jpg'
       }
 
       const job = e.msg.replace(/^林(神相|铁衣|素问|血河|碎梦|九灵)(职业)?攻略$/, '$1')
