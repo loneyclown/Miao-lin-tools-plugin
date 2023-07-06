@@ -18,12 +18,12 @@ export default class Nsh extends LinTools {
   }
 
   get moduleResourcesPath () {
-    return `${this.pluginResourcesPath}/wuxia`
+    return `${this.pluginResourcesPath}/nsh`
   }
 
   职业攻略 (e) {
       const imgs = {
-          神相: 'https://raw.githubusercontent.com/loneyclown/lin-assets/main/nsh/%E6%94%BB%E7%95%A5/%E7%A5%9E%E7%9B%B8.jpg'
+          神相: `${this.moduleResourcesPath}/攻略/神相.jpg`
       }
 
       const job = e.msg.replace(/^林(神相|铁衣|素问|血河|碎梦|九灵)(职业)?攻略$/, '$1')
