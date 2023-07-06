@@ -12,7 +12,7 @@ export default class Nsh extends LinTools {
       moduleName: '逆水寒手游工具模块',
       rule: [{
           reg: '(神相|铁衣|素问|血河|碎梦|九灵)(职业)?攻略$',
-          fnc: 'announcement'
+          fnc: '职业攻略'
         }]
     })
   }
