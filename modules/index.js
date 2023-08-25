@@ -12,7 +12,7 @@ export default class LinTools extends plugin {
   /** 插件模块配置 */
   setting = {}
 
-  constructor (conf) {
+  constructor(conf) {
     super({
       name: 'lin-tools-plugin',
       dsc: '林自用工具插件',
@@ -36,18 +36,18 @@ export default class LinTools extends plugin {
   }
 
   /** 插件根路径 */
-  get pluginRoot () {
+  get pluginRoot() {
     const _path = process.cwd().replace(/\\/g, '/')
     return path.join(_path, 'plugins', this.name)
   }
 
   /** 插件数据文件路径 */
-  get pluginDataPath () {
+  get pluginDataPath() {
     return `${this.pluginRoot}/data/${this.moduleCode}`
   }
 
   /** 插件资源文件路径 */
-  get pluginResourcesPath () {
+  get pluginResourcesPath() {
     return `${this.pluginRoot}/resources`
   }
 
@@ -57,7 +57,7 @@ export default class LinTools extends plugin {
    * @param {*} key 转换后的map对象的key
    * @returns 
    */
-  arrayToMap (arr, key) {
+  arrayToMap(arr, key) {
     const map = new Map()
     for (const item of arr) {
       map.set(item[key], item)
@@ -70,7 +70,7 @@ export default class LinTools extends plugin {
    * @param {*} map map对象
    * @returns 
    */
-  mapToArray (map) {
+  mapToArray(map) {
     const arr = []
     // eslint-disable-next-line no-unused-vars
     for (const [key, value] of map) {
@@ -84,7 +84,7 @@ export default class LinTools extends plugin {
    * @param {*} filePath 文件路径
    * @returns 
    */
-  existsJSON (filePath) {
+  existsJSON(filePath) {
     return fs.existsSync(filePath)
   }
 
@@ -94,7 +94,7 @@ export default class LinTools extends plugin {
    * @param {*} data 需要写入的数据
    * @returns 
    */
-  async writeJSON (filePath, data) {
+  async writeJSON(filePath, data) {
     const newData = JSON.stringify(data, null, 2)
     await fs.promises.mkdir(path.dirname(filePath), { recursive: true })
     try {
@@ -112,7 +112,7 @@ export default class LinTools extends plugin {
    * @param {*} filePath 文件路径
    * @returns 
    */
-  readJSON (filePath) {
+  readJSON(filePath) {
     if (fs.existsSync(filePath)) {
       return JSON.parse(fs.readFileSync(filePath))
     } else {
@@ -125,7 +125,7 @@ export default class LinTools extends plugin {
    * @param {*} value 秒数
    * @returns 
    */
-  static getTimeBySeconds (value) {
+  static getTimeBySeconds(value) {
     let secondTime = parseInt(value)// 秒
     let minuteTime = 0// 分
     let hourTime = 0// 小时
@@ -145,5 +145,37 @@ export default class LinTools extends plugin {
     const time = moment()
     time.hour(hourTime).minute(minuteTime).second(secondTime)
     return { hourTime, minuteTime, secondTime, time }
+  }
+
+  /**
+  * 制作转发消息
+  * @returns
+  */
+  async makeForwardMsg(arr) {
+    let nickname = (this.e.bot ?? Bot).nickname
+    if (this.e.isGroup) {
+      const info = await (this.e.bot ?? Bot).getGroupMemberInfo(this.e.group_id, (this.e.bot ?? Bot).uin)
+      nickname = info.card || info.nickname
+    }
+    const userInfo = {
+      user_id: (this.e.bot ?? Bot).uin,
+      nickname
+    }
+
+    let forwardMsg = _.map(arr, (x) => {
+      return {
+        ...userInfo,
+        message: x
+      }
+    })
+
+    /** 制作转发内容 */
+    if (this.e.isGroup) {
+      forwardMsg = await this.e.group.makeForwardMsg(forwardMsg)
+    } else {
+      forwardMsg = await this.e.friend.makeForwardMsg(forwardMsg)
+    }
+
+    return forwardMsg
   }
 }

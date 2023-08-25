@@ -1,8 +1,5 @@
 /* eslint-disable no-useless-escape */
-import nodeFetch from 'node-fetch'
 import _ from 'lodash'
-import iconv from 'iconv-lite'
-import moment from 'moment'
 import LinTools from '../../modules/index.js'
 
 export default class Nsh extends LinTools {
@@ -33,37 +30,5 @@ export default class Nsh extends LinTools {
         e.reply('当前职业暂时没有攻略哦')
     }
     e.reply(segment.image(img))
-  }
-
-  /**
- * 制作转发消息
- * @returns
- */
-  async makeForwardMsg (arr) {
-    let nickname = (this.e.bot ?? Bot).nickname
-    if (this.e.isGroup) {
-      const info = await (this.e.bot ?? Bot).getGroupMemberInfo(this.e.group_id, (this.e.bot ?? Bot).uin)
-      nickname = info.card || info.nickname
-    }
-    const userInfo = {
-      user_id: (this.e.bot ?? Bot).uin,
-      nickname
-    }
-
-    let forwardMsg = _.map(arr, (x) => {
-      return {
-        ...userInfo,
-        message: x
-      }
-    })
-
-    /** 制作转发内容 */
-    if (this.e.isGroup) {
-      forwardMsg = await this.e.group.makeForwardMsg(forwardMsg)
-    } else {
-      forwardMsg = await this.e.friend.makeForwardMsg(forwardMsg)
-    }
-
-    return forwardMsg
   }
 }
