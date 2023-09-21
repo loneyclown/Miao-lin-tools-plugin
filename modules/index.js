@@ -21,7 +21,7 @@ export default class LinTools extends plugin {
       rule: _.map(conf.rule, (r) => {
         return {
           ...r,
-          reg: `^林${r.reg}`
+          reg: `^lin${r.reg}`
         }
       })
     })
