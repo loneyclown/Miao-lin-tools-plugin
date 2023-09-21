@@ -29,10 +29,10 @@ export default class LinTools extends plugin {
     // 初始化插件配置
     if (!this.baseSetting || _.isEmpty(this.baseSetting)) {
       this.baseSetting = Setting.getCfg('base')
-      // this.baseSetting = new Setting('base')
     }
-    // this.setting = new Setting(conf.moduleCode)
     this.setting = Setting.getCfg(conf.moduleCode)
+    this.moduleCode = conf.moduleCode
+    this.moduleName = conf.moduleName
   }
 
   /** 插件根路径 */
