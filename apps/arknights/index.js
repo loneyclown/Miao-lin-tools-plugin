@@ -87,7 +87,7 @@ export default class Arknights extends LinTools {
               '刀客塔，你记录的理智好像得到了恢复, 快去看看吧~'
             ])
             map.set(item.userId, { ...item, isTips: true })
-            await this.writeJSON(`${this.dataPath}/reason.json`, this.mapToArray(map))
+            await this.writeJSON(path, this.mapToArray(map))
           }
         }
       }
