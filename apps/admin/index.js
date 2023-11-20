@@ -48,11 +48,19 @@ export default class Admin extends LinTools {
     ])
   }
 
-  async 私人模块_汤圆定制今日老公() {
+  async 私人模块_汤圆定制今日老公(e) {
     const groupId = 561892282
     // const userId = [1163170808]
-    if (this.e.group_id === groupId) {
-      this.reply('这是给汤圆帝安排的今日皇后：')
+    if (e.group_id === groupId) {
+      const memberMap = await e.group.getMemberMap()
+      const u = memberMap.get(940906772)
+      const msg = [
+        segment.at(e.user_id),
+        "\n荣登今天汤圆帝后位的幸运妃子是",
+        segment.image(`https://q1.qlogo.cn/g?b=qq&s=0&nk=${u.user_id}`),
+        `【${u.nickname}】(${u.user_id})\n让我举群狂欢，恭迎新后~~~`
+      ]
+      e.reply(msg)
     }
   }
 }
