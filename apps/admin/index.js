@@ -53,12 +53,13 @@ export default class Admin extends LinTools {
     // const userId = [1163170808]
     if (e.group_id === groupId) {
       const memberMap = await e.group.getMemberMap()
-      const u = memberMap.get(940906772)
+      const memberArr = Array.from(memberMap.values())
+      const findUser = _.find(memberArr, ['user_id', 940906772])
       const msg = [
         segment.at(e.user_id),
         "\n荣登今天汤圆帝后位的幸运妃子是",
-        segment.image(`https://q1.qlogo.cn/g?b=qq&s=0&nk=${u.user_id}`),
-        `【${u.nickname}】(${u.user_id})\n让我举群狂欢，恭迎新后~~~`
+        segment.image(`https://q1.qlogo.cn/g?b=qq&s=0&nk=${findUser.user_id}`),
+        `【${findUser.nickname}】(${findUser.user_id})\n让我举群狂欢，恭迎新后~~~`
       ]
       e.reply(msg)
     }
