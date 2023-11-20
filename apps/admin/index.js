@@ -12,6 +12,10 @@ export default class Admin extends LinTools {
         {
           reg: '更新群名',
           fnc: '私人模块_更新群名'
+        },
+        {
+          reg: '汤圆定制今日老公',
+          fnc: '私人模块_汤圆定制今日老公'
         }
       ]
     })
@@ -42,5 +46,13 @@ export default class Admin extends LinTools {
     Bot.sendGroupMsg(groupId, [
       `新的一天，距离过年还有${day}天 ~~~`
     ])
+  }
+
+  async 私人模块_汤圆定制今日老公() {
+    const groupId = 561892282
+    const userId = 1163170808
+    if (this.e.group_id === groupId && this.e.user_id === userId) {
+      this.reply('这是给汤圆帝安排的今日皇后：')
+    }
   }
 }
