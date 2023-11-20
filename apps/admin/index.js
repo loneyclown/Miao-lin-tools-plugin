@@ -2,6 +2,7 @@
 import _ from 'lodash'
 import moment from 'moment'
 import LinTools from '../../modules/index.js'
+import { getRandomInt } from '../../util/index.js'
 
 export default class Admin extends LinTools {
   constructor () {
@@ -54,7 +55,10 @@ export default class Admin extends LinTools {
     if (e.group_id === groupId) {
       const memberMap = await e.group.getMemberMap()
       const memberArr = Array.from(memberMap.values())
-      const findUser = _.find(memberArr, ['user_id', 940906772])
+      const candidate = await this.readJSON(`${this.pluginDataPath}/candidate.json`)
+      const randomIndex = getRandomInt(0, candidate.length)
+      const randomId = candidate[randomIndex]
+      const findUser = _.find(memberArr, ['user_id', randomId])
       const msg = [
         segment.at(e.user_id),
         "\n荣登今天汤圆帝后位的幸运妃子是",
