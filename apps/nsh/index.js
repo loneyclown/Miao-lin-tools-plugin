@@ -14,10 +14,6 @@ export default class Nsh extends LinTools {
     })
   }
 
-  get moduleResourcesPath () {
-    return `${this.pluginResourcesPath}/nsh`
-  }
-
   职业攻略 (e) {
     const imgs = {
         神相: `${this.moduleResourcesPath}/攻略/神相.jpg`,

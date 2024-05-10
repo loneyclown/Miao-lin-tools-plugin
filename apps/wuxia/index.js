@@ -21,10 +21,6 @@ export default class Wuxia extends LinTools {
     })
   }
 
-  get moduleResourcesPath () {
-    return `${this.pluginResourcesPath}/wuxia`
-  }
-
   /** 公告 */
   async announcement (e) {
     /** 是否体服 */

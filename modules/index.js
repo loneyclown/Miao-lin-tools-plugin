@@ -36,7 +36,7 @@ export default class LinTools extends plugin {
   }
 
   /** 插件根路径 */
-  get pluginRoot() {
+  static get pluginRoot() {
     const _path = process.cwd().replace(/\\/g, '/')
     return path.join(_path, 'plugins', this.name)
   }
@@ -48,7 +48,7 @@ export default class LinTools extends plugin {
 
   /** 插件资源文件路径 */
   get pluginResourcesPath() {
-    return `${this.pluginRoot}/resources`
+    return `${this.pluginRoot}/resources/${this.moduleCode}`
   }
 
   /**

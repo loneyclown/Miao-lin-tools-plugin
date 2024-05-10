@@ -44,7 +44,6 @@ export default class Update extends LinTools {
 
     /** 是否需要重启 */
     if (this.isUp) {
-      // await this.reply("更新完毕，请重启云崽后生效")
       setTimeout(() => this.restart(), 2000)
     }
   }
@@ -81,7 +80,6 @@ export default class Update extends LinTools {
     } else {
       await this.reply(`Miao-lin-tools-plugin\n最后更新时间：${time}`)
       this.isUp = true
-      /** 获取星铁组件的更新日志 */
       let log = await this.getLog('Miao-lin-tools-plugin')
       await this.reply(log)
     }
