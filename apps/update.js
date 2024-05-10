@@ -170,13 +170,13 @@ export default class Update extends LinTools {
     stdout = stdout.toString()
 
     if (errMsg.includes('Timed out')) {
-      let remote = errMsg.match(/'(.+?)'/g)[0].replace(/'/g, '')
+      let remote = errMsg.match(/'(.+?)'/g)?.[0].replace(/'/g, '')
       await this.reply(msg + `\n连接超时：${remote}`)
       return
     }
 
     if (/Failed to connect|unable to access/g.test(errMsg)) {
-      let remote = errMsg.match(/'(.+?)'/g)[0].replace(/'/g, '')
+      let remote = errMsg.match(/'(.+?)'/g)?.[0].replace(/'/g, '')
       await this.reply(msg + `\n连接失败：${remote}`)
       return
     }
