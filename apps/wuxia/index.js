@@ -2,6 +2,7 @@
 import nodeFetch from 'node-fetch'
 import _ from 'lodash'
 import moment from 'moment'
+import puppeteer from 'puppeteer'
 import LinTools from '../../modules/index.js'
 
 export default class Wuxia extends LinTools {
@@ -13,9 +14,6 @@ export default class Wuxia extends LinTools {
         {
           reg: '天刀公告(体服)?(最新)?(图)?',
           fnc: 'announcement'
-        }, {
-          reg: '天刀145老一(文斗|答题|题目)?',
-          fnc: 'td145one'
         }
       ]
     })
@@ -90,12 +88,6 @@ export default class Wuxia extends LinTools {
 
     // e.reply(this.makeForwardMsg(tArr))
     e.reply(Bot.makeForwardArray(tArr))
-  }
-
-  /** 145答题 */
-  async td145one (e) {
-    const img = segment.image(`${this.moduleResourcesPath}/td145one.jpg`)
-    e.reply(img)
   }
 
   async screenshot(url, selectors = 'body') {
