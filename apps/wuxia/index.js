@@ -74,7 +74,7 @@ export default class Wuxia extends LinTools {
 
     if (newFlag) {
       if (imgFlag) {
-        await this.screenshot(`https://wuxia.qq.com${news.url}`, '.main')
+        await this.screenshot(e, `https://wuxia.qq.com${news.url}`, '.main')
         return false
       }
       e.reply(`【${news.date}】${news.text}: https://wuxia.qq.com${news.url}`)
@@ -90,7 +90,7 @@ export default class Wuxia extends LinTools {
     e.reply(Bot.makeForwardArray(tArr))
   }
 
-  async screenshot(url, selectors = 'body') {
+  async screenshot(e, url, selectors = 'body') {
     logger.info(this.moduleResourcesPath, this.moduleDataPath)
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
     const page = await browser.newPage()
@@ -100,6 +100,6 @@ export default class Wuxia extends LinTools {
     const img = segment.image(`${this.moduleResourcesPath}/temp.jpg`)
     await e.reply(img)
     await browser.close()
-    // await fs.unlink(`${this.moduleResourcesPath}/temp.jpg`);
+    await fs.unlink(`${this.moduleResourcesPath}/temp.jpg`);
   }
 }
