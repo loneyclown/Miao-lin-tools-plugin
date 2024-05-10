@@ -54,35 +54,35 @@ export default class Update extends LinTools {
   }
 
   async runUpdate (isForce) {
-    let command = 'git -C ./plugins/lin-tools-plugin/ pull --no-rebase'
+    let command = 'git -C ./plugins/Miao-lin-tools-plugin/ pull --no-rebase'
     if (isForce) {
-      command = `git -C ./plugins/lin-tools-plugin/ checkout . && ${command}`
+      command = `git -C ./plugins/Miao-lin-tools-plugin/ checkout . && ${command}`
       this.e.reply('正在执行强制更新操作，请稍等')
     } else {
       this.e.reply('正在执行更新操作，请稍等')
     }
     /** 获取上次提交的commitId，用于获取日志时判断新增的更新日志 */
-    this.oldCommitId = await this.getcommitId('lin-tools-plugin')
+    this.oldCommitId = await this.getcommitId('Miao-lin-tools-plugin')
     uping = true
     let ret = await this.execSync(command)
     uping = false
 
     if (ret.error) {
-      logger.mark(`${this.e.logFnc} 更新失败：lin-tools-plugin`)
+      logger.mark(`${this.e.logFnc} 更新失败：Miao-lin-tools-plugin`)
       this.gitErr(ret.error, ret.stdout)
       return false
     }
 
     /** 获取插件提交的最新时间 */
-    let time = await this.getTime('lin-tools-plugin')
+    let time = await this.getTime('Miao-lin-tools-plugin')
 
     if (/(Already up[ -]to[ -]date|已经是最新的)/.test(ret.stdout)) {
-      await this.reply(`lin-tools-plugin已经是最新版本\n最后更新时间：${time}`)
+      await this.reply(`Miao-lin-tools-plugin已经是最新版本\n最后更新时间：${time}`)
     } else {
-      await this.reply(`lin-tools-plugin\n最后更新时间：${time}`)
+      await this.reply(`Miao-lin-tools-plugin\n最后更新时间：${time}`)
       this.isUp = true
       /** 获取星铁组件的更新日志 */
-      let log = await this.getLog('lin-tools-plugin')
+      let log = await this.getLog('Miao-lin-tools-plugin')
       await this.reply(log)
     }
 
@@ -120,9 +120,9 @@ export default class Update extends LinTools {
 
     let end = ''
     end =
-      '更多详细信息，请前往gitee查看\nhttps://gitee.com/loneyclown/lin-tools-plugin'
+      '更多详细信息，请前往gitee查看\nhttps://gitee.com/loneyclown/Miao-lin-tools-plugin'
 
-    log = await this.makeForwardMsg(`lin-tools-plugin更新日志，共${line}条`, log, end)
+    log = await this.makeForwardMsg(`Miao-lin-tools-plugin更新日志，共${line}条`, log, end)
 
     return log
   }

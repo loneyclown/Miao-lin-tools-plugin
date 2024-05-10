@@ -8,9 +8,9 @@ const _path = process.cwd().replace(/\\/g, '/')
 class Setting {
 
   /** 插件默认配置 */
-  defPath = `${_path}/plugins/lin-tools-plugin/defSet/`
+  defPath = `${_path}/plugins/Miao-lin-tools-plugin/defSet/`
   /** 插件用户自定义配置 */
-  configPath = `${_path}/plugins/lin-tools-plugin/config/`
+  configPath = `${_path}/plugins/Miao-lin-tools-plugin/config/`
   /** 配置监听 */
   watcher = {}
 
@@ -73,7 +73,7 @@ class Setting {
     }
     const watcher = chokidar.watch(filePath)
     watcher.on('change', path => {
-      logger.mark(`[lin-tools-plugin][${app}]修改配置文件: ${path}`)
+      logger.mark(`[Miao-lin-tools-plugin][${app}]修改配置文件: ${path}`)
     })
     this.watcher = watcher
   }

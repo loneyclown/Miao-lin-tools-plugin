@@ -14,7 +14,7 @@ export default class LinTools extends plugin {
 
   constructor(conf) {
     super({
-      name: 'lin-tools-plugin',
+      name: 'Miao-lin-tools-plugin',
       dsc: '林自用工具插件',
       priority: 50,
       ...conf,
