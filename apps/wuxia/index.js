@@ -100,6 +100,6 @@ export default class Wuxia extends LinTools {
     const img = segment.image(`${this.moduleResourcesPath}/temp.jpg`)
     await e.reply(img)
     await browser.close()
-    await fs.unlink(`${this.moduleResourcesPath}/temp.jpg`);
+    // await fs.unlink(`${this.moduleResourcesPath}/temp.jpg`);
   }
 }
