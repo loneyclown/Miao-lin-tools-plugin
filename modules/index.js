@@ -41,14 +41,24 @@ export default class LinTools extends plugin {
     return path.join(_path, 'plugins', this.name)
   }
 
-  /** 插件数据文件路径 */
-  get pluginDataPath() {
-    return `${this.pluginRoot}/data/${this.moduleCode}`
+  /** 插件资源文件路径 */
+  static get pluginResourcesPath() {
+    return `${LinTools.pluginRoot}/resources`
   }
 
-  /** 插件资源文件路径 */
-  get pluginResourcesPath() {
-    return `${this.pluginRoot}/resources/${this.moduleCode}`
+  /** 插件数据文件路径 */
+  static get pluginDataPath() {
+    return `${LinTools.pluginRoot}/data`
+  }
+
+  /** 插件模块资源文件路径 */
+  get moduleResourcesPath() {
+    return `${LinTools.pluginRoot}/resources/${this.moduleCode}`
+  }
+
+  /** 插件模块数据文件路径 */
+  get moduleDataPath() {
+    return `${LinTools.pluginRoot}/data/${this.moduleCode}`
   }
 
   /**
