@@ -98,7 +98,8 @@ export default class Wuxia extends LinTools {
       return `【${x.date}】${x.text}: ${x.url}`
     })
 
-    e.reply(this.makeForwardMsg(tArr))
+    // e.reply(this.makeForwardMsg(tArr))
+    e.reply(Bot.makeForwardArray(tArr))
   }
 
   /** 145答题 */
