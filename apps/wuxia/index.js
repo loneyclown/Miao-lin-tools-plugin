@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-escape */
 import nodeFetch from 'node-fetch'
 import _ from 'lodash'
-import iconv from 'iconv-lite'
 import moment from 'moment'
 import LinTools from '../../modules/index.js'
 
@@ -42,12 +41,7 @@ export default class Wuxia extends LinTools {
     }
 
     const url = this.setting.wuxiaAnnoListUrl
-    const htmlRes = await nodeFetch(url).then((response) => response.arrayBuffer()).then((buffer) => {
-      // const utf8Decoder = new TextDecoder('utf-8')
-      // const html = utf8Decoder.decode(buffer)
-      const html = iconv.decode(Buffer.from(buffer), 'gbk')
-      return html
-    })
+    const htmlRes = await nodeFetch(url).then((response) => response.arrayBuffer()).then((buffer) => new TextDecoder('gbk').decode(buffer))
     const liReg = /<li class="news-st"(([\s\S])*?)<\/li>/gi
     const iterator = htmlRes.matchAll(liReg)
 
