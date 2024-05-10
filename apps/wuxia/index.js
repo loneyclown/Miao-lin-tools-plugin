@@ -80,7 +80,7 @@ export default class Wuxia extends LinTools {
 
     if (newFlag) {
       if (imgFlag) {
-        this.screenshot(`https://wuxia.qq.com${news.url}`)
+        await this.screenshot(`https://wuxia.qq.com${news.url}`, '.main')
         return false
       }
       e.reply(`【${news.date}】${news.text}: https://wuxia.qq.com${news.url}`)
@@ -109,7 +109,7 @@ export default class Wuxia extends LinTools {
     const body = await page.$(selectors)
     await body.screenshot({ path: `${this.moduleResourcesPath}/temp.webp` })
     const img = segment.image(`${this.moduleResourcesPath}/temp.jpg`)
-    e.reply(img)
+    await e.reply(img)
     await browser.close()
     await fs.unlink(`${this.moduleResourcesPath}/temp.webp`);
   }
