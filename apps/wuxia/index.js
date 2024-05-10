@@ -3,6 +3,7 @@ import nodeFetch from 'node-fetch'
 import _ from 'lodash'
 import moment from 'moment'
 import puppeteer from 'puppeteer'
+import fs from 'node:fs'
 import LinTools from '../../modules/index.js'
 
 export default class Wuxia extends LinTools {
@@ -92,7 +93,7 @@ export default class Wuxia extends LinTools {
 
   async screenshot(e, url, selectors = 'body') {
     logger.info(this.moduleResourcesPath, this.moduleDataPath)
-    const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--lang=zh-CN,zh'] })
     const page = await browser.newPage()
     await page.goto(url)
     const body = await page.$(selectors)
