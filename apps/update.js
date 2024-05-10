@@ -81,7 +81,6 @@ export default class Update extends LinTools {
     } else {
       await this.reply(`Miao-lin-tools-plugin\n最后更新时间：${time}`)
       this.isUp = true
-      /** 获取星铁组件的更新日志 */
       let log = await this.getLog('Miao-lin-tools-plugin')
       await this.reply(log)
     }
@@ -120,9 +119,9 @@ export default class Update extends LinTools {
 
     let end = ''
     end =
-      '更多详细信息，请前往gitee查看\nhttps://gitee.com/loneyclown/Miao-lin-tools-plugin'
+      '更多详细信息，请前往github查看\nhttps://github.com/loneyclown/Miao-lin-tools-plugin'
 
-    log = await this.makeForwardMsg(`Miao-lin-tools-plugin更新日志，共${line}条`, log, end)
+    log = await Bot.makeForwardArray(`Miao-lin-tools-plugin更新日志，共${line}条`, log, end)
 
     return log
   }
