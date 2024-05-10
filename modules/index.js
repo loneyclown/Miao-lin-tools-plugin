@@ -38,7 +38,7 @@ export default class LinTools extends plugin {
   /** 插件根路径 */
   static get pluginRoot() {
     const _path = process.cwd().replace(/\\/g, '/')
-    return path.join(_path, 'plugins', this.name)
+    return path.join(_path, 'plugins', 'Miao-lin-tools-plugin')
   }
 
   /** 插件资源文件路径 */
