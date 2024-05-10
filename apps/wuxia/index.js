@@ -91,14 +91,15 @@ export default class Wuxia extends LinTools {
   }
 
   async screenshot(url, selectors = 'body') {
+    logger.info(this.moduleResourcesPath, this.pluginDataPath)
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
     const page = await browser.newPage()
     await page.goto(url)
     const body = await page.$(selectors)
-    await body.screenshot({ path: `${this.moduleResourcesPath}/temp.webp` })
+    await body.screenshot({ path: `${this.moduleResourcesPath}/temp.jpg` })
     const img = segment.image(`${this.moduleResourcesPath}/temp.jpg`)
     await e.reply(img)
     await browser.close()
-    await fs.unlink(`${this.moduleResourcesPath}/temp.webp`);
+    await fs.unlink(`${this.moduleResourcesPath}/temp.jpg`);
   }
 }
